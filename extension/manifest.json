@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+
+  "name": "AIFilter",
+
+  "version": "1.0",
+
+  "description": "AI-generated content detection extension",
+
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+
+  "action": {
+    "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
