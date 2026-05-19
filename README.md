@@ -64,11 +64,11 @@ Result in Extension
 ### Extension Result
 ![Extension Result](docs/screenshots/ai-analysis-engine/extension-result.png)
 
-### Backend Running
-![Backend Running](docs/screenshots/ai-analysis-engine/backend-running.png)
+### Extension Demo
+![Extension Demo](docs/screenshots/ai-analysis-engine/extension-demo.png)
 
-### Project Structure
-![Project Structure](docs/screenshots/ai-analysis-engine/project-structure.png)
+### API Testing
+![API Testing](docs/screenshots/ai-analysis-engine/api-testing.png)
 
 ## Future Improvements
 
