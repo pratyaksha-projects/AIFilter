@@ -1,80 +1,100 @@
-document.getElementById("scanBtn")
-
-.addEventListener(
+document.getElementById("scanBtn").addEventListener(
 
     "click",
 
     async () => {
 
-        const [tab] = await chrome.tabs.query({
+        const resultDiv = document.getElementById("result");
 
-            active: true,
+        resultDiv.innerHTML = "Scanning...";
 
-            currentWindow: true
-        });
+        try {
 
-        chrome.tabs.sendMessage(
+            const [tab] = await chrome.tabs.query({
 
-            tab.id,
+                active: true,
+                currentWindow: true
+            });
 
-            {
-                action: "getPageText"
-            },
+            chrome.tabs.sendMessage(
 
-            async (response) => {
+                tab.id,
 
-                if (!response) {
+                { action: "extractText" },
 
-                    document.getElementById("result")
-                    .innerText = "Unable to scan page";
+                async (response) => {
 
-                    return;
-                }
+                    try {
 
-                const pageText = response.text.substring(0, 3000);
+                        if (!response || !response.text) {
 
-                document.getElementById("result")
-                .innerText = "Analyzing content...";
+                            resultDiv.innerHTML = "No text found.";
 
-                try {
-
-                    const apiResponse = await fetch(
-
-                        "http://127.0.0.1:8000/api/detect/",
-
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-
-                            body: JSON.stringify({
-
-                                text: pageText
-                            })
+                            return;
                         }
-                    );
 
-                    const data = await apiResponse.json();
+                        const apiResponse = await fetch(
 
-                    document.getElementById("result")
-                    .innerText =
+                            "http://127.0.0.1:8000/api/detect/",
 
-                    `${data.result}
+                            {
 
-AI Probability: ${data.ai_probability}%`;
+                                method: "POST",
 
+                                headers: {
+
+                                    "Content-Type": "application/json"
+                                },
+
+                                body: JSON.stringify({
+
+                                    text: response.text
+                                })
+                            }
+                        );
+
+                        const data = await apiResponse.json();
+
+                        let cssClass = "";
+
+                        if (data.ai_probability <= 30) {
+
+                            cssClass = "low";
+
+                        } else if (data.ai_probability <= 60) {
+
+                            cssClass = "medium";
+
+                        } else {
+
+                            cssClass = "high";
+                        }
+
+                        resultDiv.className = cssClass;
+
+                        resultDiv.innerHTML = `
+
+                            <div>${data.result}</div>
+
+                            <div>
+                                AI Probability: ${data.ai_probability}%
+                            </div>
+                        `;
+
+                    } catch (err) {
+
+                        console.error(err);
+
+                        resultDiv.innerHTML = "Analysis failed.";
+                    }
                 }
+            );
 
-                catch (error) {
+        } catch (error) {
 
-                    document.getElementById("result")
-                    .innerText = "Backend connection failed";
+            console.error(error);
 
-                    console.error(error);
-                }
-            }
-        );
+            resultDiv.innerHTML = "Extension error.";
+        }
     }
 );

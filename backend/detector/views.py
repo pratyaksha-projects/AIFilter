@@ -1,33 +1,15 @@
-from django.shortcuts import render
 
-# detection logic
+# detection logic # api endpoints 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from .analyzer import analyze_content
 
 # Create your views here.
 
-@api_view(['POST'])
+@api_view(['POST']) # wll handle api logic 
 
 def detect_ai(request):
-
     text = request.data.get("text", "")
-
-    text_length = len(text)
-
-    if text_length > 1000:
-
-        probability = 78
-        result = "Likely AI Generated"
-
-    else:
-
-        probability = 22
-        result = "Likely Human Written"
-
-    return Response({
-
-        "ai_probability": probability,
-
-        "result": result
-    })
+    result = analyze_content(text)
+    return Response(result)

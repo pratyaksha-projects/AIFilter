@@ -1,13 +1,17 @@
+console.log("AIFilter content script loaded");
+
+
 chrome.runtime.onMessage.addListener(
 
     (request, sender, sendResponse) => {
 
-        if (request.action === "getPageText") {
+        if (request.action === "extractText") {
 
-            const pageText = document.body.innerText;
+            const text = document.body.innerText;
 
             sendResponse({
-                text: pageText
+
+                text: text
             });
         }
 
