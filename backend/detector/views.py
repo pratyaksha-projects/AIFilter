@@ -13,3 +13,13 @@ def detect_ai(request):
     text = request.data.get("text", "")
     result = analyze_content(text)
     return Response(result)
+
+from .image_analyzer import analyze_image_url
+
+@api_view(['POST'])
+def detect_ai_image(request):
+    image_url = request.data.get("image_url", "")
+    if not image_url:
+        return Response({"error": "no image_url provided"})
+    result = analyze_image_url(image_url)
+    return Response(result)
