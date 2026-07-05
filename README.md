@@ -80,6 +80,9 @@ Uses the pre-trained Hugging Face model [`umm-maybe/AI-image-detector`](https://
 ### Extension Demo
 ![Extension Demo](docs/screenshots/ai-analysis-engine/extension-demo.png)
 
+### Extension Demo
+![Extension Demo](docs/screenshots/ai-analysis-engine/image-demo.png)
+
 ### API Testing
 ![API Testing](docs/screenshots/ai-analysis-engine/api-testing.png)
 
